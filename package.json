@@ -1,6 +1,6 @@
 {
   "name": "contextwall",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Local-only sanitizer for LLM prompts. Detects API keys, PII, secrets, and credentials and replaces them with safe placeholders, semantic fakes, or reversible tokens.",
   "type": "module",
   "main": "./dist/index.cjs",

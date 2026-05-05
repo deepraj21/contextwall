@@ -2,9 +2,9 @@
 
 **A TypeScript-first utility that intercepts API keys, tokens, PII, and secrets from strings before they are sent to any AI provider — then optionally restores them in the model's output. 100% local, zero-dependency, works with any LLM SDK.**
 
-[![npm version](https://img.shields.io/npm/v/contextwall)](https://npmjs.com/package/contextwall)
-[![license](https://img.shields.io/npm/l/contextwall)](./LICENSE)
-[![bundle size](https://img.shields.io/bundlephobia/minzip/contextwall)](https://bundlephobia.com/package/contextwall)
+[![npm version](https://img.shields.io/npm/v/contextwall?logo=npm)](https://www.npmjs.com/package/contextwall)
+[![license](https://img.shields.io/npm/l/contextwall?color=blue)](https://www.npmjs.com/package/contextwall)
+[![npm downloads](https://img.shields.io/npm/dm/contextwall)](https://www.npmjs.com/package/contextwall)
 
 - Zero network calls
 - Zero runtime dependencies
