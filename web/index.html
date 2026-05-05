@@ -1,0 +1,378 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ContextWall - Prompt Security, 100% Local</title>
+    <meta
+      name="description"
+      content="ContextWall intercepts API keys, tokens, PII, and secrets before prompts are sent to AI providers."
+    />
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <header class="top-nav">
+      <div class="container nav-inner">
+        <a class="brand" href="#home" aria-label="ContextWall home">
+          <span class="brand-text">ContextWall</span>
+        </a>
+        <button class="nav-toggle" id="nav-toggle" aria-expanded="false" aria-controls="nav-links">
+          Menu
+        </button>
+        <nav id="nav-links" class="nav-links" aria-label="Primary navigation">
+          <a href="#problem">Problem</a>
+          <a href="#fix">Fix</a>
+          <a href="#api">API</a>
+          <a href="#integrations">Integrations</a>
+          <a href="#security">Security</a>
+          <a href="#contributing">Contributing</a>
+          <a
+            class="github-star-link"
+            href="https://github.com/deepraj21/contextwall"
+            target="_blank"
+            rel="noreferrer"
+            aria-label="View ContextWall repository on GitHub"
+          >
+            <img
+              class="github-star-badge"
+              src="https://img.shields.io/github/stars/deepraj21/contextwall?style=social&label=Star"
+              alt="GitHub stars for deepraj21/contextwall"
+            />
+          </a>
+        </nav>
+      </div>
+    </header>
+
+    <main id="home">
+      <section class="hero-band section">
+        <div class="container hero-grid">
+          <div>
+            <span class="badge-coral">Prompt Safety</span>
+            <h1>Stop secrets before they leave your runtime.</h1>
+            <p class="lead">
+              A TypeScript-first utility that intercepts API keys, tokens, PII, and secrets from strings before
+              they are sent to any AI provider. 100% local, zero-dependency, and works with any LLM SDK.
+            </p>
+            <div class="button-row">
+              <a class="button-primary" href="#installation">npm install contextwall</a>
+              <a class="button-secondary" href="#api">Explore API</a>
+            </div>
+            <ul class="inline-list">
+              <li>Zero network calls</li>
+              <li>Zero runtime dependencies</li>
+              <li>Browser-safe core</li>
+              <li>ESM + CJS output</li>
+            </ul>
+          </div>
+          <article class="code-window-card hero-code">
+            <h2>The Problem</h2>
+            <pre><code>// You write this
+const { text } = await generateText({
+  model: 'anthropic/claude-sonnet-4-5',
+  prompt: `Here is the api key rsk_124321, use it to call the payments API`,
+});
+
+// rsk_124321 just left your app and is now in:
+// - provider request logs
+// - observability tools
+// - third-party SDKs on request path
+// - possible fine-tuning datasets</code></pre>
+          </article>
+        </div>
+      </section>
+
+      <section id="problem" class="section surface-soft">
+        <div class="container">
+          <h2>The Problem</h2>
+          <p>
+            Prompt payloads often carry high-risk data accidentally. Without interception, that data can spread
+            across provider logs, observability systems, middleware, and debugging pipelines.
+          </p>
+          <div class="feature-grid">
+            <article class="feature-card">
+              <h3>API keys leak quickly</h3>
+              <p>Keys like <code>sk_</code>, <code>rsk_</code>, and cloud credentials are easy to paste into prompts.</p>
+            </article>
+            <article class="feature-card">
+              <h3>PII exposure compounds risk</h3>
+              <p>Email addresses, phone numbers, and payment info can unintentionally enter third-party processing.</p>
+            </article>
+            <article class="feature-card">
+              <h3>Sanitization is often inconsistent</h3>
+              <p>Ad hoc regex logic in each service leads to coverage gaps and hard-to-audit behavior.</p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section id="fix" class="section">
+        <div class="container two-up">
+          <article class="product-mockup-card-dark">
+            <h2>The Fix</h2>
+            <pre><code>import { promptwall } from 'contextwall';
+
+const { text } = await generateText({
+  model: 'anthropic/claude-sonnet-4-5',
+  prompt: promptwall(`Here is the api key rsk_124321, use it to call payments API`),
+});
+
+// Prompt sent:
+// "Here is the api key [API_KEY], use it to call payments API"</code></pre>
+          </article>
+          <article class="feature-card">
+            <h3>Local by default</h3>
+            <p>All detection and replacement happen in-process with no telemetry.</p>
+            <h3>Deterministic safety net</h3>
+            <p>Regex and policy-driven behavior makes outcomes predictable and testable.</p>
+            <h3>Flexible integration surface</h3>
+            <p>Use direct APIs, middleware, integrations, or stream transforms depending on your architecture.</p>
+          </article>
+        </div>
+      </section>
+
+      <section id="installation" class="section surface-soft">
+        <div class="container">
+          <h2>Installation</h2>
+          <article class="code-window-card">
+            <div class="install-tabs" role="tablist" aria-label="Package manager install command">
+              <button class="install-tab is-active" role="tab" aria-selected="true" data-command="npm install contextwall">
+                npm
+              </button>
+              <button class="install-tab" role="tab" aria-selected="false" data-command="yarn add contextwall">
+                yarn
+              </button>
+              <button class="install-tab" role="tab" aria-selected="false" data-command="pnpm add contextwall">
+                pnpm
+              </button>
+              <button class="install-tab" role="tab" aria-selected="false" data-command="bun add contextwall">
+                bun
+              </button>
+            </div>
+            <div class="install-command-wrap">
+              <pre><code id="install-command">npm install contextwall</code></pre>
+              <button class="copy-button" id="copy-install" type="button" aria-label="Copy install command" title="Copy install command">
+                <span class="copy-icon" aria-hidden="true"></span>
+              </button>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section id="api" class="section">
+        <div class="container">
+          <h2>API Overview</h2>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Function</th>
+                  <th>Purpose</th>
+                  <th>Returns</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr><td><code>promptwall(text, options?)</code></td><td>Sanitize a prompt string</td><td><code>string</code> or tokenized payload</td></tr>
+                <tr><td><code>dewall(text, context)</code></td><td>Restore tokenized values</td><td><code>string</code></td></tr>
+                <tr><td><code>auditwall(text, options?)</code></td><td>Dry-run detection report</td><td><code>AuditReport</code></td></tr>
+                <tr><td><code>createwall(config)</code></td><td>Pre-configured sanitizer factory</td><td><code>(text, override?) => string</code></td></tr>
+                <tr><td><code>batchwall(prompts, options?)</code></td><td>Sanitize multiple prompts</td><td><code>string[]</code> or tokenized payload</td></tr>
+                <tr><td><code>schemawall(obj, options?)</code></td><td>Recursively sanitize object strings</td><td>Same shape, sanitized</td></tr>
+                <tr><td><code>streamwall(options?)</code></td><td>Streaming sanitizer</td><td><code>TransformStream</code></td></tr>
+                <tr><td><code>policywall(text, policy, options?)</code></td><td>Apply block/warn/redact policy</td><td>String or throws</td></tr>
+                <tr><td><code>logwall(text, options?)</code></td><td>Sanitize + emit structured logs</td><td><code>string</code></td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <h3>Replacement Strategies</h3>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr><th>Strategy</th><th>Input</th><th>Output</th></tr>
+              </thead>
+              <tbody>
+                <tr><td><code>placeholder</code></td><td><code>sk_live_abc</code></td><td><code>[API_KEY]</code></td></tr>
+                <tr><td><code>semantic</code></td><td><code>sk_live_abc</code></td><td><code>sk_test_EXAMPLE000</code></td></tr>
+                <tr><td><code>tokenize</code></td><td><code>sk_live_abc</code></td><td><code>[SECRET::a1b2c3]</code> + context</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <h3>Built-in Detectors</h3>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr><th>Detector</th><th>What it catches</th><th>Severity</th></tr>
+              </thead>
+              <tbody>
+                <tr><td><code>api_keys</code></td><td>sk_, rsk_, pk_live, AKIA, hf_ patterns</td><td>critical</td></tr>
+                <tr><td><code>jwt</code></td><td>JWT base64 structure</td><td>high</td></tr>
+                <tr><td><code>bearer_tokens</code></td><td>Bearer token patterns</td><td>high</td></tr>
+                <tr><td><code>pii_email</code></td><td>Email addresses</td><td>medium</td></tr>
+                <tr><td><code>pii_phone</code></td><td>International phone numbers</td><td>medium</td></tr>
+                <tr><td><code>pii_ssn</code></td><td>US SSN patterns</td><td>high</td></tr>
+                <tr><td><code>pii_credit_card</code></td><td>Luhn-validated cards</td><td>critical</td></tr>
+                <tr><td><code>ip_address</code></td><td>IPv4 + IPv6</td><td>low</td></tr>
+                <tr><td><code>private_key</code></td><td>Private key blocks</td><td>critical</td></tr>
+                <tr><td><code>connection_string</code></td><td>Credential-bearing DB URLs</td><td>critical</td></tr>
+                <tr><td><code>env_variable</code></td><td>Inline env assignment values</td><td>high</td></tr>
+                <tr><td><code>high_entropy</code></td><td>Likely secrets by entropy (opt-in)</td><td>medium</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <section class="section surface-soft">
+        <div class="container">
+          <h2>API Reference</h2>
+          <div class="api-grid">
+            <article class="feature-card"><h3><code>promptwall(text, options?)</code></h3><pre><code>const clean = promptwall('token sk_live_abc and john@acme.com');
+// -> "token [API_KEY] and [EMAIL]"</code></pre></article>
+            <article class="feature-card"><h3><code>dewall(text, context)</code></h3><pre><code>const { text, context } = promptwall('sk_live_abc', { strategy: 'tokenize' });
+const restored = dewall(result.text, context);</code></pre></article>
+            <article class="feature-card"><h3><code>auditwall(text, options?)</code></h3><pre><code>const report = auditwall('auth: rsk_xyz, email: john@acme.com');
+// report.detections, report.riskScore</code></pre></article>
+            <article class="feature-card"><h3><code>createwall(config)</code></h3><pre><code>const mywall = createwall({ strategy: 'semantic', detectors: ['api_keys'] });</code></pre></article>
+            <article class="feature-card"><h3><code>batchwall(prompts, options?)</code></h3><pre><code>const cleaned = batchwall(['Key: sk_live_abc', 'Email: john@example.com']);</code></pre></article>
+            <article class="feature-card"><h3><code>schemawall(obj, options?)</code></h3><pre><code>const safe = schemawall([{ role: 'user', content: 'key sk_live_abc' }]);</code></pre></article>
+            <article class="feature-card"><h3><code>streamwall(options?)</code></h3><pre><code>await pipeline(promptReadable, streamwall({ strategy: 'placeholder' }), llmWritable);</code></pre></article>
+            <article class="feature-card"><h3><code>policywall(text, policy)</code></h3><pre><code>const safe = policywall('key: rsk_abc, email: a@b.com', { API_KEY: 'block', default: 'redact' });</code></pre></article>
+            <article class="feature-card"><h3><code>logwall(text, options?)</code></h3><pre><code>const clean = logwall('api: sk_abc', { logger: (event) => console.warn(event.type) });</code></pre></article>
+          </div>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="container two-up">
+          <article class="code-window-card">
+            <h2>Custom Detectors</h2>
+            <pre><code>const wall = createwall({
+  customRules: [
+    { name: 'STRIPE_WEBHOOK_SECRET', pattern: /whsec_[a-zA-Z0-9]{32,}/g, severity: 'critical', replace: '[STRIPE_WEBHOOK_SECRET]' },
+    { name: 'INTERNAL_USER_ID', pattern: /USR-[0-9]{8}/g, severity: 'low', replace: () => 'USR-[REDACTED]' },
+  ],
+});</code></pre>
+          </article>
+          <article class="code-window-card">
+            <h2>Middleware</h2>
+            <pre><code>// Express
+app.use('/api/chat', wallMiddleware({ target: ['body.prompt', 'body.messages'], strategy: 'placeholder' }));
+
+// Next.js API Routes
+export default withWall(async function handler(req, res) { ... }, { target: ['body.prompt'] });
+
+// Hono
+app.use('/chat', honoWall({ target: ['body.prompt'] }));</code></pre>
+          </article>
+        </div>
+      </section>
+
+      <section id="integrations" class="section surface-soft">
+        <div class="container">
+          <h2>SDK Integrations</h2>
+          <div class="feature-grid">
+            <article class="feature-card">
+              <h3>Vercel AI SDK</h3>
+              <pre><code>const { text } = await generateText({
+  model: openai('gpt-4o'),
+  ...wallPrompt('My key is sk_live_abc'),
+});</code></pre>
+            </article>
+            <article class="feature-card">
+              <h3>OpenAI SDK</h3>
+              <pre><code>const response = await openai.chat.completions.create(
+  sanitizeRequest({ model: 'gpt-4o', messages: [{ role: 'user', content: 'key: sk_live_abc' }] })
+);</code></pre>
+            </article>
+            <article class="feature-card">
+              <h3>LangChain</h3>
+              <pre><code>const chain = WallRunnable.from({ strategy: 'placeholder' }).pipe(llm);
+const result = await chain.invoke('my token is rsk_abc');</code></pre>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="container two-up">
+          <article class="feature-card">
+            <h2>TypeScript</h2>
+            <p>ContextWall ships full type definitions.</p>
+            <pre><code>import type {
+  WallConfig, WallContext, WallPolicy, AuditReport,
+  DetectionEvent, DetectorName, CustomRule, WallPolicyError
+} from 'contextwall';</code></pre>
+          </article>
+          <article id="security" class="feature-card">
+            <h2>Security Model</h2>
+            <ul>
+              <li>Entirely local execution, no network calls.</li>
+              <li>No data storage and no telemetry.</li>
+              <li><code>logwall()</code> never emits original secret values.</li>
+              <li>Tokenized context remains in-memory only unless you persist it.</li>
+            </ul>
+          </article>
+        </div>
+      </section>
+
+      <section class="section surface-soft">
+        <div class="container two-up">
+          <article class="feature-card">
+            <h2>Limitations</h2>
+            <ul>
+              <li>Not a substitute for secrets management.</li>
+              <li>Regex-based detection may miss novel/obfuscated formats.</li>
+              <li><code>dewall()</code> requires the original in-memory tokenization context.</li>
+            </ul>
+          </article>
+          <article id="contributing" class="feature-card">
+            <h2>Contributing</h2>
+            <pre><code>git clone https://github.com/deepraj21/contextwall
+cd contextwall
+pnpm install
+pnpm run typecheck
+pnpm run lint
+pnpm run test
+pnpm run test:coverage
+pnpm run build</code></pre>
+            <p>New detectors should include true positives, false positives, and severity rationale.</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="container">
+          <article class="cta-band-coral">
+            <h2>Protect prompts before they leave your app.</h2>
+            <p>Use ContextWall as a deterministic, local guardrail in your LLM pipeline.</p>
+            <a class="button-secondary" href="#installation">Install ContextWall</a>
+          </article>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <div class="container footer-grid">
+        <div>
+          <p class="brand footer-brand"><span class="spike">*</span><span>ContextWall</span></p>
+          <p>MIT © ContextWall Contributors</p>
+        </div>
+        <div>
+          <h3>Product</h3>
+          <ul><li><a href="#api">API</a></li><li><a href="#integrations">Integrations</a></li></ul>
+        </div>
+        <div>
+          <h3>Resources</h3>
+          <ul><li><a href="#security">Security Model</a></li><li><a href="#contributing">Contributing</a></li></ul>
+        </div>
+        <div>
+          <h3>License</h3>
+          <ul><li><a href="https://www.npmjs.com/package/contextwall">npm package</a></li><li><a href="https://github.com/deepraj21/contextwall">GitHub</a></li></ul>
+        </div>
+      </div>
+    </footer>
+
+    <script src="./script.js"></script>
+  </body>
+</html>
